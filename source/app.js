@@ -7,3 +7,8 @@ app.get('/', (req, res) => {
 })
 
 app.listen(port, start)
+
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
+
+app.use("/users", require("./routes/user.routes"))
