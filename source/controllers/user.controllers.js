@@ -13,7 +13,7 @@ module.exports = {
                 msg: err.msg
             }))
 
-            if(errors && errors.length > 0) {
+            if (errors && errors.length > 0) {
                 return res.status(200).json(errorMsg)
             }
 
@@ -24,7 +24,23 @@ module.exports = {
                 img: req.files && req.files.length > 0 ? req.files[0].filename : "default.png",
                 admin: (req.body.email).includes("@tuscomics.com") ? true : false
             })
+
             return res.status(200).json(userDB)
+        } catch (error) {
+            return res.status(500).json(error)
+        }
+    },
+    access: async (req, res) => {
+        try {
+            let users = await User.findAll({
+                include: {
+                    all: true
+                }
+            })
+            let user = users.find(user => user.email === req.body.email)
+
+            req.session.user = user
+            return res.status(200).json(user)
         } catch (error) {
             return res.status(500).json(error)
         }

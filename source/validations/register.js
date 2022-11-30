@@ -21,22 +21,20 @@ const register = [
             return true
         }
 
-        if (imagen != undefined) {
-            let extensiones = [".svg", ".jpg", ".png", ".jpeg"]
-            let extension = extname(imagen.filename)
-            if (!extensiones.includes(extension)) {
-                unlinkSync(resolve(__dirname, "../../uploads/avatars/" + imagen.filename))
-                throw new Error("La extension debería ser '.svg', '.jpg', '.png', '.jpeg'")
-            }
-
-            if (imagen.size > 2097152) {
-                unlinkSync(resolve(__dirname, "../../uploads/avatars/" + imagen.filename))
-                throw new Error("La imagen supera el peso de 2MB");
-            }
+        let extensiones = [".svg", ".jpg", ".png", ".jpeg"]
+        let extension = extname(imagen.filename)
+        if (!extensiones.includes(extension)) {
+            unlinkSync(resolve(__dirname, "../../uploads/avatars/" + imagen.filename))
+            throw new Error("La extension debería ser '.svg', '.jpg', '.png', '.jpeg'")
         }
+
+        if (imagen.size > 2097152) {
+            unlinkSync(resolve(__dirname, "../../uploads/avatars/" + imagen.filename))
+            throw new Error("La imagen supera el peso de 2MB");
+        }
+
         return true
     })
-
 ]
 
 module.exports = register
