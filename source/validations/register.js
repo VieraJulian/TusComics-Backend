@@ -16,7 +16,10 @@ const register = [
     }),
     body("password").notEmpty().withMessage("La contraseña no puede quedar vacia").bail().isLength({ min: 3 }).withMessage("La contraseña debe tener más de 3 caracteres").bail().isLength({ max: 16 }).withMessage("La contraseña debe tener menos de 16 caracteres").bail(),
     body("image").custom((value, { req }) => {
-        let imagen = req.files[0];
+        let imagen = null
+        if (req.files && req.files.length > 0) {
+            imagen = req.files[0]
+        }
         if (imagen == undefined) {
             return true
         }
@@ -31,6 +34,13 @@ const register = [
         if (imagen.size > 2097152) {
             unlinkSync(resolve(__dirname, "../../uploads/avatars/" + imagen.filename))
             throw new Error("La imagen supera el peso de 2MB");
+        }
+
+        if (req.files.length > 1){
+            req.files.forEach(img => {
+                unlinkSync(resolve(__dirname, "../../uploads/avatars/" + img.filename))
+            });
+            throw new Error("No puedes subir más de una imagen");
         }
 
         return true
