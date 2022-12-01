@@ -1,6 +1,6 @@
 const { User } = require("../database/models/index")
 const { hashSync } = require("bcryptjs")
-let { validationResult } = require("express-validator")
+const { validationResult } = require("express-validator")
 
 module.exports = {
     process: async (req, res) => {
