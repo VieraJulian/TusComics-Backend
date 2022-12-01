@@ -36,7 +36,7 @@ const register = [
             throw new Error("La imagen supera el peso de 2MB");
         }
 
-        if (req.files.length > 1){
+        if (req.files.length > 1) {
             req.files.forEach(img => {
                 unlinkSync(resolve(__dirname, "../../uploads/avatars/" + img.filename))
             });

@@ -32,15 +32,36 @@ module.exports = {
     },
     access: async (req, res) => {
         try {
+            let validations = validationResult(req)
+            let { errors } = validations
+            let errorMsg = errors.map(err => Object({
+                param: err.param,
+                value: err.value,
+                msg: err.msg
+            }))
+
+            if (errors && errors.length > 0) {
+                return res.status(200).json(errorMsg)
+            }
+
             let users = await User.findAll({
                 include: {
                     all: true
                 }
             })
-            let user = users.find(user => user.email === req.body.email)
+            let userDB = users.find(user => user.email === req.body.email)
 
-            req.session.user = user
-            return res.status(200).json(user)
+            userData = {
+                id: userDB.id,
+                name: userDB.name,
+                email: userDB.email,
+                img: userDB.img,
+                admin: userDB.admin
+            }
+
+            req.session.user = userData
+
+            return res.status(200).json(userData)
         } catch (error) {
             return res.status(500).json(error)
         }
