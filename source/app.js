@@ -19,3 +19,4 @@ app.use(session({
 }))
 
 app.use("/users", require("./routes/user.routes"))
+app.use("/products", require("./routes/product.routes"))
