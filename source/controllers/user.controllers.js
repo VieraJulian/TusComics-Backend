@@ -68,15 +68,27 @@ module.exports = {
     },
     editProfile: async (req, res) => {
         try {
+            let validations = validationResult(req)
+            let { errors } = validations
+            let errorMsg = errors.map(err => Object({
+                param: err.param,
+                value: err.value,
+                msg: err.msg
+            }))
+
+            if (errors && errors.length > 0) {
+                return res.status(200).json(errorMsg)
+            }
+
             let users = await User.findAll()
             let userDB = users.find(user => user.id === req.session.user.id)
 
             let editData = {
                 name: req.body.name ? req.body.name : userDB.name,
-                email: req.body.email ? req.body.email : userDB.email,
+                email: userDB.email,
                 password: req.body.newPassword ? hashSync(req.body.newPassword) : userDB.password,
                 img: req.files && req.files.length > 0 ? req.files[0].filename : userDB.img,
-                admin: (req.body.email).includes("@tuscomics.com") ? true : false
+                admin: userDB.admin
             }
 
             let userEdited = await User.update(editData, {
@@ -85,7 +97,7 @@ module.exports = {
                 }
             })
 
-            return res.status(200).json(userEdited)
+            return res.status(200).json(editData)
         } catch (error) {
             return res.status(500).json(error)
         }

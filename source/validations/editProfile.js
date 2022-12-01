@@ -2,19 +2,24 @@ const { body } = require("express-validator")
 const { User } = require("../database/models/index")
 const { extname, resolve } = require("path")
 const { unlinkSync } = require("fs")
+const { compareSync } = require("bcryptjs")
 
-const register = [
-    body("name").notEmpty().withMessage("El nombre no puede quedar vacío").bail().isLength({ min: 2 }).withMessage("El nombre debe contener un minímo de dos caracteres").bail().isLength({ max: 50 }).withMessage("El nombre no debe contener más de 50 caracteres").bail(),
-    body("email").notEmpty().withMessage("El email no puede quedar vacío").bail().isEmail().withMessage("El formato de email no es válido").bail().custom(async (value) => {
-        let users = await User.findAll()
-        users = users.map(user => user.email)
-        if (users.includes(value)) {
-            throw new Error("El email ya está registrado")
+const editProfile = [
+    body("name").custom(value => {
+        if (value === "") {
+            return true
+        }
+
+        if (value.length < 2) {
+            throw new Error("El nombre debe contener un minímo de 2 caracteres")
+        }
+
+        if (value.length > 50) {
+            throw new Error("El nombre no debe contener más de 50 caracteres")
         }
 
         return true
     }),
-    body("password").notEmpty().withMessage("La contraseña no puede quedar vacia").bail().isLength({ min: 3 }).withMessage("La contraseña debe tener más de 2 caracteres").bail().isLength({ max: 16 }).withMessage("La contraseña debe tener un máximo de 16 caracteres").bail(),
     body("image").custom((value, { req }) => {
         let imagen = null
         if (req.files && req.files.length > 0) {
@@ -44,7 +49,36 @@ const register = [
         }
 
         return true
+    }),
+    body("password").custom(async (value, { req }) => {
+        let users = await User.findAll()
+        let userDB = users.find(user => user.email === req.session.user.email)
+
+        if (value === "") {
+            return true
+        }
+
+        if (!compareSync(value, userDB.password)) {
+            throw new Error("La contraseña es incorrecta")
+        }
+
+        return true
+    }),
+    body("newPassword").custom((value, { req }) => {
+        if (req.body.password === "") {
+            return true
+        }
+
+        if (value.length < 3) {
+            throw new Error("La contraseña debe tener más de 2 caracteres")
+        }
+
+        if (value.length > 16) {
+            throw new Error("La contraseña debe tener máximo 16 caracteres")
+        }
+
+        return true
     })
 ]
 
-module.exports = register
+module.exports = editProfile
