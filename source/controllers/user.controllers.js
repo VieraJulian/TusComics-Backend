@@ -65,5 +65,29 @@ module.exports = {
         } catch (error) {
             return res.status(500).json(error)
         }
+    },
+    editProfile: async (req, res) => {
+        try {
+            let users = await User.findAll()
+            let userDB = users.find(user => user.id === req.session.user.id)
+
+            let editData = {
+                name: req.body.name ? req.body.name : userDB.name,
+                email: req.body.email ? req.body.email : userDB.email,
+                password: req.body.newPassword ? hashSync(req.body.newPassword) : userDB.password,
+                img: req.files && req.files.length > 0 ? req.files[0].filename : userDB.img,
+                admin: (req.body.email).includes("@tuscomics.com") ? true : false
+            }
+
+            let userEdited = await User.update(editData, {
+                where: {
+                    id: userDB.id,
+                }
+            })
+
+            return res.status(200).json(userEdited)
+        } catch (error) {
+            return res.status(500).json(error)
+        }
     }
 }
