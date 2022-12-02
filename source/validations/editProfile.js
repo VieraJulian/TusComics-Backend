@@ -6,7 +6,7 @@ const { compareSync } = require("bcryptjs")
 
 const editProfile = [
     body("name").custom(value => {
-        if (value === "") {
+        if (value === "") { // probar luego con el Front
             return true
         }
 
@@ -54,7 +54,7 @@ const editProfile = [
         let users = await User.findAll()
         let userDB = users.find(user => user.email === req.session.user.email)
 
-        if (value === "") {
+        if (value === "") { // probar luego con el Front
             return true
         }
 

@@ -4,7 +4,7 @@ const { extname, resolve } = require("path")
 const { unlinkSync } = require("fs")
 
 const register = [
-    body("name").notEmpty().withMessage("El nombre no puede quedar vacío").bail().isLength({ min: 2 }).withMessage("El nombre debe contener un minímo de dos caracteres").bail().isLength({ max: 50 }).withMessage("El nombre no debe contener más de 50 caracteres").bail(),
+    body("name").notEmpty().withMessage("El nombre no puede quedar vacío").bail().isLength({ min: 2 }).withMessage("El nombre debe contener un minímo de 2 caracteres").bail().isLength({ max: 50 }).withMessage("El nombre no debe contener más de 50 caracteres").bail(),
     body("email").notEmpty().withMessage("El email no puede quedar vacío").bail().isEmail().withMessage("El formato de email no es válido").bail().custom(async (value) => {
         let users = await User.findAll()
         users = users.map(user => user.email)

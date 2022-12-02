@@ -49,7 +49,7 @@ module.exports = {
                 description: productDB.description,
                 price: Number(productDB.price),
                 img: productDB.img,
-                market: productDB.market
+                market: productDB.market // probar luego con el Front
             }
 
             return res.status(200).json(product)
@@ -84,7 +84,7 @@ module.exports = {
                 description: req.body.description ? req.body.description : productDB.description,
                 price: req.body.price ? Number(req.body.price) : Number(productDB.price),
                 img: imagen ? imagen : productDB.img,
-                market: req.body.market ? true : productDB.market
+                market: req.body.market ? req.body.market : productDB.market // probar luego con el Front
             }, {
                 where: {
                     id: productDB.id
