@@ -104,8 +104,8 @@ module.exports = {
         try {
             let product = await Product.findByPk(req.params.id)
             
-            let deleteProduct = await product.destroy()
             unlinkSync(resolve(__dirname, "../../uploads/products/" + product.img))
+            let deleteProduct = await product.destroy()
 
             return res.status(200).json(deleteProduct)
         } catch (error) {
