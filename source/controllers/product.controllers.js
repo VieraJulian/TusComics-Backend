@@ -1,5 +1,7 @@
 const { Product } = require("../database/models/index")
 const { validationResult } = require("express-validator")
+const { resolve } = require("path")
+const { unlinkSync } = require("fs")
 
 module.exports = {
     create: async (req, res) => {
@@ -94,6 +96,18 @@ module.exports = {
             let productUpdate = await Product.findByPk(req.params.id)
 
             return res.status(200).json(productUpdate)
+        } catch (error) {
+            return res.status(500).json(error)
+        }
+    },
+    delete: async (req, res) => {
+        try {
+            let product = await Product.findByPk(req.params.id)
+            
+            let deleteProduct = await product.destroy()
+            unlinkSync(resolve(__dirname, "../../uploads/products/" + product.img))
+
+            return res.status(200).json(deleteProduct)
         } catch (error) {
             return res.status(500).json(error)
         }

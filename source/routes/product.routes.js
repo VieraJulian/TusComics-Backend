@@ -7,5 +7,6 @@ const editMiddleware = require("../middlewares/editProduct.middleware")
 router.post("/create", createMiddleware, productController.create)
 router.get("/:id", productController.one)
 router.post("/edit/:id", editMiddleware, productController.edit)
+router.post("/delete/:id", productController.delete)
 
 module.exports = router
