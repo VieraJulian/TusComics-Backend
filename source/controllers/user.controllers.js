@@ -59,7 +59,7 @@ module.exports = {
                 admin: userDB.admin
             }
 
-            if (req.body.recordame != undefined) {
+            if (req.body.recordame != undefined) { // probar luego con el Front
                 res.cookie("recordame", userDB.email, { maxAge: 60000 * 60 })
             }
 
