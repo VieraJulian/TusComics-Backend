@@ -59,6 +59,10 @@ module.exports = {
                 admin: userDB.admin
             }
 
+            if (req.body.recordame != undefined) {
+                res.cookie("recordame", userDB.email, { maxAge: 60000 * 60 })
+            }
+
             req.session.user = userData
 
             return res.status(200).json(userData)

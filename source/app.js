@@ -2,6 +2,8 @@ const express = require('express')
 const app = express()
 const { port, start } = require("./modules/port")
 const session = require("express-session")
+const cookie = require("cookie-parser")
+const recordame = require("./middlewares/recordame.middleware")
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
@@ -17,6 +19,9 @@ app.use(session({
   saveUninitialized: true,
   resave: true
 }))
+
+app.use(cookie())
+app.use(recordame)
 
 app.use("/users", require("./routes/user.routes"))
 app.use("/products", require("./routes/product.routes"))
