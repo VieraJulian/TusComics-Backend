@@ -1,6 +1,8 @@
 const { User } = require("../database/models/index")
 const { hashSync } = require("bcryptjs")
 const { validationResult } = require("express-validator")
+const { resolve } = require("path")
+const { unlinkSync } = require("fs")
 
 module.exports = {
     process: async (req, res) => {
@@ -86,6 +88,10 @@ module.exports = {
 
             let users = await User.findAll()
             let userDB = users.find(user => user.id === req.session.user.id)
+
+            if (req.files && req.files.length > 0 && userDB.img != "default.png") {
+                unlinkSync(resolve(__dirname, "../../uploads/avatars/" + userDB.img))
+            }
 
             let editData = {
                 name: req.body.name ? req.body.name : userDB.name,

@@ -79,6 +79,7 @@ module.exports = {
 
             if (req.files && req.files.length > 0) {
                 imagen = req.files[0].filename
+                unlinkSync(resolve(__dirname, "../../uploads/products/" + productDB.img))
             }
 
             await Product.update({
@@ -86,7 +87,7 @@ module.exports = {
                 description: req.body.description ? req.body.description : productDB.description,
                 price: req.body.price ? Number(req.body.price) : Number(productDB.price),
                 img: imagen ? imagen : productDB.img,
-                market: req.body.market ? req.body.market : productDB.market // probar luego con el Front
+                market: req.body.market != undefined ? true : false // probar luego con el Front
             }, {
                 where: {
                     id: productDB.id
