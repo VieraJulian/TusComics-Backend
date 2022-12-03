@@ -25,3 +25,4 @@ app.use(recordame)
 
 app.use("/users", require("./routes/user.routes"))
 app.use("/products", require("./routes/product.routes"))
+app.use("/orders", require("./routes/order.routes"))
