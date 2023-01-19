@@ -4,6 +4,7 @@ const { port, start } = require("./modules/port")
 const session = require("express-session")
 const cookie = require("cookie-parser")
 const recordame = require("./middlewares/recordame.middleware")
+const cors = require("cors")
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
@@ -13,6 +14,8 @@ app.listen(port, start)
 
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
+
+app.use(cors());
 
 app.use(session({
   secret: 'nodejs',

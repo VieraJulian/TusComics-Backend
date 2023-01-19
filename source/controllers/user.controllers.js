@@ -18,7 +18,7 @@ module.exports = {
             if (errors && errors.length > 0) {
                 return res.status(200).json(errorMsg)
             }
-
+            
             let userDB = await User.create({
                 name: req.body.name,
                 email: req.body.email,
