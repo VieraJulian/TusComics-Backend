@@ -6,8 +6,15 @@ const cookie = require("cookie-parser")
 const recordame = require("./middlewares/recordame.middleware")
 const cors = require("cors")
 
+const { resolve } = require("path")
+
 app.get('/', (req, res) => {
   res.send('Hello World!')
+})
+
+app.get('/imagen', (req, res) => {
+  let imagenUrl = req.query.imagen
+  res.sendFile(resolve(__dirname, "../uploads/avatars/" + imagenUrl))
 })
 
 app.listen(port, start)
