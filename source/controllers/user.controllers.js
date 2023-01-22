@@ -87,7 +87,7 @@ module.exports = {
             }
 
             let users = await User.findAll()
-            let userDB = users.find(user => user.id === req.session.user.id)
+            let userDB = users.find(user => user.email === req.body.email)
 
             if (req.files && req.files.length > 0 && userDB.img != "default.png") {
                 unlinkSync(resolve(__dirname, "../../uploads/avatars/" + userDB.img))

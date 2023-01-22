@@ -52,7 +52,9 @@ const editProfile = [
     }),
     body("password").custom(async (value, { req }) => {
         let users = await User.findAll()
-        let userDB = users.find(user => user.email === req.session.user.email)
+        let email = req.body.email
+
+        let userDB = users.find(user => user.email === email)
 
         if (value === "") { // probar luego con el Front
             return true
