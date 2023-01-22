@@ -29,7 +29,7 @@ module.exports = {
                 description: req.body.description,
                 price: Number(req.body.price),
                 img: imagen,
-                market: req.body.market != undefined ? true : false // probar luego con el Front
+                market: req.body.market
             })
 
             return res.status(200).json(newProduct)
