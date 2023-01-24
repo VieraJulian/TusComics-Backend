@@ -17,6 +17,11 @@ app.get('/imagen', (req, res) => {
   res.sendFile(resolve(__dirname, "../uploads/avatars/" + imagenUrl))
 })
 
+app.get('/productImg', (req, res) => {
+  let imagenUrl = req.query.imagen
+  res.sendFile(resolve(__dirname, "../uploads/products/" + imagenUrl))
+})
+
 app.listen(port, start)
 
 app.use(express.urlencoded({ extended: true }))
