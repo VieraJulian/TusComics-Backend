@@ -4,6 +4,15 @@ const { resolve } = require("path")
 const { unlinkSync } = require("fs")
 
 module.exports = {
+    allProducts: async (req, res, next) => {
+        try {
+            let products = await Product.findAll()
+
+            return res.status(200).json(products)
+        } catch (error) {
+            return res.status(500).json(error)
+        }
+    },
     create: async (req, res) => {
         try {
             let validations = validationResult(req)
