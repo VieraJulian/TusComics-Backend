@@ -36,6 +36,7 @@ module.exports = {
             let newProduct = await Product.create({
                 name: req.body.name,
                 description: req.body.description,
+                category: req.body.category,
                 price: Number(req.body.price),
                 img: imagen,
                 market: req.body.market

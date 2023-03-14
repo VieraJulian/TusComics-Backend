@@ -7,6 +7,7 @@ const { unlinkSync } = require("fs")
 module.exports = {
     process: async (req, res) => {
         try {
+            
             let validations = validationResult(req)
             let { errors } = validations
             let errorMsg = errors.map(err => Object({
